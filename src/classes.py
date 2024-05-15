@@ -1,0 +1,69 @@
+import requests
+import json
+from src.abstract_classes import Vacansy_service, Fail_Filler
+
+vacancy_list = []
+dictionary_vacancy = {}
+
+
+class Vacansy():
+    def __init__(self, id, name, salary, responsibility, url_to_vacansy):
+        self.id = id
+        self.name = name
+        self.salary = salary
+        self.responsibility = responsibility
+        self.url_to_vacansy = url_to_vacansy
+
+    def __str__(self):
+        return f'''НАЗВАНИЕ: {self.name}
+ЗАРПЛАТА: {self.salary}
+ТРЕБОВАНИЯ:{self.responsibility}
+ССЫЛКА:{self.url_to_vacansy}
+ID: {self.id}'''
+
+    def __repr__(self):
+        return f'''НАЗВАНИЕ: {self.name}
+ЗАРПЛАТА: {self.salary}
+ТРЕБОВАНИЯ:{self.responsibility}
+ССЫЛКА:{self.url_to_vacansy}
+# ID: {self.id}\n'''
+
+
+class HH_integration(Vacansy_service):
+    """Класс для подключения к API Hed Hunter и получения списка вакансий"""
+
+    def __init__(self):
+        self.url = "https://api.hh.ru/vacancies"
+
+    def get_data(self, params):
+        """Метод позволяет получать данные с саййта HH через API"""
+        response = requests.get(url=self.url, params=params)
+        return self.convert_vacansy(response.json())
+        # return print(response.json())
+
+    def convert_vacansy(self, data):
+        """Метод отсортировывает только необходимые данные: Название, Зарплату, Описание, Ссылкa на вакансию
+        и добавляет экземпляр класса в список вакансий"""
+        for item in data['items']:
+            vacancy_list.append(Vacansy(id=item['id'],
+                                        name=item['name'],
+                                        salary=item['salary']['from'],
+                                        responsibility=item['snippet']['responsibility'],
+                                        url_to_vacansy=item['alternate_url']))
+
+
+
+
+class Rewriter_to_file(Fail_Filler):
+
+    def __init__(self, list_vacancy):
+        self.list_vacancy = list_vacancy
+
+
+    def filling_file(self):
+        with open('vacancy.json', 'w', encoding='utf-8') as file:
+            for element in self.list_vacancy:
+                dictionary_vacancy[element.id] = [element.name, element.salary, element.responsibility,
+                                                  element.url_to_vacansy]
+            json.dump(dictionary_vacancy, file)
+        return dictionary_vacancy

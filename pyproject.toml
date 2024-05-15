@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "oop-kursach"
+version = "0.1.0"
+description = ""
+authors = ["Almaz Muzafarov <muzafrov.almaz2012@yandex.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+develop = "^0.2.1"
+requests = "^2.31.0"
+
+
+[tool.poetry.group.develop.dependencies]
+pytest = "^8.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

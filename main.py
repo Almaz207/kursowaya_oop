@@ -1,6 +1,7 @@
 from src.classes import HH_integration  # ,Converter_Vacansy
 from pprint import pprint
-from src.classes import Vacansy, vacancy_list, Rewriter_to_file, dictionary_vacancy
+from src.classes import Vacansy, vacancy_list, Rewriter_to_file\
+#, dictionary_vacancy
 
 
 
@@ -13,7 +14,7 @@ def utitle():
 
     queri = "Python"
     top = 25
-    salary = 60000
+    salary = 600000
 
     params = {
         'page': 0,

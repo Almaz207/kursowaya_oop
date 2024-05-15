@@ -3,7 +3,7 @@ import json
 from src.abstract_classes import Vacansy_service, Fail_Filler
 
 vacancy_list = []
-dictionary_vacancy = {}
+
 
 
 class Vacansy():
@@ -61,9 +61,10 @@ class Rewriter_to_file(Fail_Filler):
 
 
     def filling_file(self):
+        dictionary_vacancy = {}
         with open('vacancy.json', 'w', encoding='utf-8') as file:
             for element in self.list_vacancy:
-                dictionary_vacancy[element.id] = [element.name, element.salary, element.responsibility,
-                                                  element.url_to_vacansy]
-            json.dump(dictionary_vacancy, file)
+                body_vacancy={'Название вакансии':element.name,'Зарплата':element.salary,'Описание':element.responsibility,'Ссылка':element.url_to_vacansy}
+                dictionary_vacancy[element.id] = body_vacancy
+            json.dump(dictionary_vacancy, file, ensure_ascii=False)
         return dictionary_vacancy

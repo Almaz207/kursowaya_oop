@@ -8,13 +8,10 @@ from src.classes import Vacansy, vacancy_list, Rewriter_to_file\
 
 
 def utitle():
-    # queri = input("Введите поисковый запрос: ")
-    # top = int(input("Введите количество вакансий для вывода в топ N: "))
-    # salary= int(input("Введите желаемую зарплату: "))
+    queri = input("Введите поисковый запрос: ")
+    top = int(input("Введите количество вакансий для вывода в топ N: "))
+    salary= int(input("Введите размер Зарплатной вилки: "))
 
-    queri = "Python"
-    top = 25
-    salary = 600000
 
     params = {
         'page': 0,

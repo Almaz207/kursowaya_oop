@@ -5,7 +5,6 @@ from src.abstract_classes import Vacansy_service, Fail_Filler
 vacancy_list = []
 
 
-
 class Vacansy():
     def __init__(self, id, name, salary, responsibility, url_to_vacansy):
         self.id = id
@@ -52,19 +51,17 @@ class HH_integration(Vacansy_service):
                                         url_to_vacansy=item['alternate_url']))
 
 
-
-
 class Rewriter_to_file(Fail_Filler):
 
     def __init__(self, list_vacancy):
         self.list_vacancy = list_vacancy
 
-
     def filling_file(self):
         dictionary_vacancy = {}
         with open('vacancy.json', 'w', encoding='utf-8') as file:
             for element in self.list_vacancy:
-                body_vacancy={'Название вакансии':element.name,'Зарплата':element.salary,'Описание':element.responsibility,'Ссылка':element.url_to_vacansy}
+                body_vacancy = {'Название вакансии': element.name, 'Зарплата': element.salary,
+                                'Описание': element.responsibility, 'Ссылка': element.url_to_vacansy}
                 dictionary_vacancy[element.id] = body_vacancy
             json.dump(dictionary_vacancy, file, ensure_ascii=False)
         return dictionary_vacancy

@@ -1,12 +1,15 @@
+import requests
 from abc import ABC, abstractmethod
 
 
 class Vacansy_service(ABC):
     """Абстрактный класс для подключения к API сервиса с вакансиями"""
 
-    @abstractmethod
+
     def get_data(self, params):
-        pass
+        """Метод позволяет получать данные с саййта HH через API"""
+        response = requests.get(url=self.url, params=params)
+        return self.convert_vacansy(response.json())
 
 
 class Fail_Filler(ABC):

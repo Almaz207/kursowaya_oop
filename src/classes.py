@@ -6,6 +6,7 @@ vacancy_list = []
 
 
 class Vacansy():
+    """Класс конструктор вакансии. Атрибуты : ID, название вакансии, зарплата, описание и ссылка на саму ваакансию"""
     def __init__(self, id, name, salary, responsibility, url_to_vacansy):
         self.id = id
         self.name = name
@@ -34,11 +35,6 @@ class HH_integration(Vacansy_service):
     def __init__(self):
         self.url = "https://api.hh.ru/vacancies"
 
-    def get_data(self, params):
-        """Метод позволяет получать данные с саййта HH через API"""
-        response = requests.get(url=self.url, params=params)
-        return self.convert_vacansy(response.json())
-        # return print(response.json())
 
     def convert_vacansy(self, data):
         """Метод отсортировывает только необходимые данные: Название, Зарплату, Описание, Ссылкa на вакансию
@@ -52,6 +48,7 @@ class HH_integration(Vacansy_service):
 
 
 class Rewriter_to_file(Fail_Filler):
+    """Класс для обработки вакансии"""
 
     def __init__(self, list_vacancy):
         self.list_vacancy = list_vacancy

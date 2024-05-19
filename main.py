@@ -1,6 +1,6 @@
 from src.classes import HH_integration  # ,Converter_Vacansy
 from pprint import pprint
-from src.classes import Vacansy, vacancy_list, Rewriter_to_file\
+from src.classes import Vacansy, vacancy_list, Rewriter_to_file
 #, dictionary_vacancy
 
 
@@ -23,7 +23,7 @@ def utitle():
         'per_page': top
     }
 
-    HH_integration().get_data(params)
+    HH_integration()._convert_vacansy(params)
 
     print(Rewriter_to_file(vacancy_list).filling_file())
 

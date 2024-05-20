@@ -79,3 +79,9 @@ class RewriterToFile(FailFiller):
                 dictionary_vacancy[element.id] = body_vacancy
             json.dump(dictionary_vacancy, file, ensure_ascii=False)
         return dictionary_vacancy
+
+    def edit_data(self):
+        pass
+
+    def delit_data(self):
+        pass

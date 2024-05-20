@@ -5,11 +5,11 @@ class VacansyService(ABC):
     """Абстрактный класс для подключения к API сервиса с вакансиями"""
 
     @abstractmethod
-    def __get_data(self, parametr):
+    def __get_data(self, queri, salary, top):
         pass
 
     @abstractmethod
-    def convert_vacansy(self, params):
+    def convert_vacansy(self, queri, salary, top):
         pass
 
 

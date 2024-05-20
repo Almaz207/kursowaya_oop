@@ -36,16 +36,26 @@ class HHIntegration(VacansyService):
     def __init__(self):
         self.__url = "https://api.hh.ru/vacancies"
 
-    def __get_data(self, parametr):
+    def __get_data(self, queri, salary, top):
         """Метод позволяет получать данные с сайта через API"""
+        parametr = {
+            'page': 0,
+            'text': queri,
+            'area': '113',
+            'salary': salary,
+            'vacancy_search_order': 'salary_asc',
+            'only_with_salary': True,
+            'per_page': top
+        }
+
         response = requests.get(url=self.__url, params=parametr)
         response.raise_for_status()
         return response.json()
 
-    def _convert_vacansy(self, params):
+    def convert_vacansy(self, queri, salary, top):
         """Метод отсортировывает только необходимые данные: Название, Зарплату, Описание, Ссылкa на вакансию
         и добавляет экземпляр класса в список вакансий"""
-        data = HHIntegration().__get_data(params)
+        data = HHIntegration().__get_data(queri, salary, top)
         for item in data['items']:
             vacancy_list.append(Vacansy(id=item['id'],
                                         name=item['name'],

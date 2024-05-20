@@ -9,7 +9,7 @@ class VacansyService(ABC):
         pass
 
     @abstractmethod
-    def _convert_vacansy(self, params):
+    def convert_vacansy(self, params):
         pass
 
 
@@ -19,10 +19,10 @@ class FailFiller(ABC):
     def filling_file(self):
         pass
 
-    # @abstractmethod
-    # def edit_data(self):
-    #     pass
-    #
-    # @abstractmethod
-    # def delit_data(self):
-    #     pass
+    @abstractmethod
+    def edit_data(self):
+        pass
+
+    @abstractmethod
+    def delit_data(self):
+        pass

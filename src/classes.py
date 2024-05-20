@@ -7,6 +7,7 @@ vacancy_list = []
 
 class Vacansy():
     """Класс конструктор вакансии. Атрибуты : ID, название вакансии, зарплата, описание и ссылка на саму ваакансию"""
+
     def __init__(self, id, name, salary, responsibility, url_to_vacansy):
         self.id = id
         self.name = name
@@ -17,15 +18,15 @@ class Vacansy():
     def __str__(self):
         return f'''НАЗВАНИЕ: {self.name}
 ЗАРПЛАТА: {self.salary}
-ТРЕБОВАНИЯ:{self.responsibility}
-ССЫЛКА:{self.url_to_vacansy}
+ТРЕБОВАНИЯ: {self.responsibility}
+ССЫЛКА: {self.url_to_vacansy}
 ID: {self.id}'''
 
     def __repr__(self):
         return f'''НАЗВАНИЕ: {self.name}
 ЗАРПЛАТА: {self.salary}
-ТРЕБОВАНИЯ:{self.responsibility}
-ССЫЛКА:{self.url_to_vacansy}
+ТРЕБОВАНИЯ: {self.responsibility}
+ССЫЛКА: {self.url_to_vacansy}
 # ID: {self.id}\n'''
 
 
@@ -35,10 +36,16 @@ class HH_integration(Vacansy_service):
     def __init__(self):
         self.url = "https://api.hh.ru/vacancies"
 
+    def __get_data(self, parametr):
+        """Метод позволяет получать данные с сайта через API"""
+        response = requests.get(url=self.url, params=parametr)
+        response.raise_for_status()
+        return response.json()
 
-    def convert_vacansy(self, data):
+    def _convert_vacansy(self, params):
         """Метод отсортировывает только необходимые данные: Название, Зарплату, Описание, Ссылкa на вакансию
         и добавляет экземпляр класса в список вакансий"""
+        data = HH_integration().__get_data(params)
         for item in data['items']:
             vacancy_list.append(Vacansy(id=item['id'],
                                         name=item['name'],

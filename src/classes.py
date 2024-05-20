@@ -1,11 +1,11 @@
 import requests
 import json
-from src.abstract_classes import Vacansy_service, Fail_Filler
+from src.abstract_classes import VacansyService, FailFiller
 
 vacancy_list = []
 
 
-class Vacansy():
+class Vacansy:
     """Класс конструктор вакансии. Атрибуты : ID, название вакансии, зарплата, описание и ссылка на саму ваакансию"""
 
     def __init__(self, id, name, salary, responsibility, url_to_vacansy):
@@ -30,22 +30,22 @@ ID: {self.id}'''
 # ID: {self.id}\n'''
 
 
-class HH_integration(Vacansy_service):
+class HHIntegration(VacansyService):
     """Класс для подключения к API Hed Hunter и получения списка вакансий"""
 
     def __init__(self):
-        self.url = "https://api.hh.ru/vacancies"
+        self.__url = "https://api.hh.ru/vacancies"
 
     def __get_data(self, parametr):
         """Метод позволяет получать данные с сайта через API"""
-        response = requests.get(url=self.url, params=parametr)
+        response = requests.get(url=self.__url, params=parametr)
         response.raise_for_status()
         return response.json()
 
     def _convert_vacansy(self, params):
         """Метод отсортировывает только необходимые данные: Название, Зарплату, Описание, Ссылкa на вакансию
         и добавляет экземпляр класса в список вакансий"""
-        data = HH_integration().__get_data(params)
+        data = HHIntegration().__get_data(params)
         for item in data['items']:
             vacancy_list.append(Vacansy(id=item['id'],
                                         name=item['name'],
@@ -54,7 +54,7 @@ class HH_integration(Vacansy_service):
                                         url_to_vacansy=item['alternate_url']))
 
 
-class Rewriter_to_file(Fail_Filler):
+class RewriterToFile(FailFiller):
     """Класс для обработки вакансии"""
 
     def __init__(self, list_vacancy):

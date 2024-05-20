@@ -1,17 +1,13 @@
-from src.classes import HH_integration  # ,Converter_Vacansy
-from pprint import pprint
-from src.classes import Vacansy, vacancy_list, Rewriter_to_file
-#, dictionary_vacancy
+from src.classes import HHIntegration, Vacansy, vacancy_list, RewriterToFile
 
 
-
+# , dictionary_vacancy
 
 
 def utitle():
     queri = input("Введите поисковый запрос: ")
     top = int(input("Введите количество вакансий для вывода в топ N: "))
-    salary= int(input("Введите размер Зарплатной вилки: "))
-
+    salary = int(input("Введите размер Зарплатной вилки: "))
 
     params = {
         'page': 0,
@@ -23,10 +19,10 @@ def utitle():
         'per_page': top
     }
 
-    HH_integration()._convert_vacansy(params)
+    HHIntegration()._convert_vacansy(params)
 
-    print(Rewriter_to_file(vacancy_list).filling_file())
+    print(RewriterToFile(vacancy_list).filling_file())
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     utitle()

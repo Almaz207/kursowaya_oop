@@ -9,7 +9,7 @@ class VacansyService(ABC):
         pass
 
     @abstractmethod
-    def _convert_vacansy(self, params):
+    def convert_vacansy(self, params):
         pass
 
 

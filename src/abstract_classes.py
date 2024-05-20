@@ -19,10 +19,10 @@ class FailFiller(ABC):
     def filling_file(self):
         pass
 
-    # @abstractmethod
-    # def edit_data(self):
-    #     pass
-    #
-    # @abstractmethod
-    # def delit_data(self):
-    #     pass
+    @abstractmethod
+    def edit_data(self):
+        pass
+
+    @abstractmethod
+    def delit_data(self):
+        pass

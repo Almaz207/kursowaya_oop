@@ -50,12 +50,15 @@ class HHIntegration(VacansyService):
 
         response = requests.get(url=self.__url, params=parametr)
         response.raise_for_status()
+        # if response.raise_for_status():
+        #     print('Внимание: у данного пользователя отсутствуют права администратора.')
         return response.json()
 
     def convert_vacansy(self, queri, salary, top):
         """Метод отсортировывает только необходимые данные: Название, Зарплату, Описание, Ссылкa на вакансию
         и добавляет экземпляр класса в список вакансий"""
-        data = HHIntegration().__get_data(queri, salary, top)
+        # data = HHIntegration().__get_data(queri, salary, top)
+        data = self.__get_data(queri, salary, top)
         for item in data['items']:
             vacancy_list.append(Vacansy(id=item['id'],
                                         name=item['name'],
@@ -85,3 +88,12 @@ class RewriterToFile(FailFiller):
 
     def delit_data(self):
         pass
+
+    def _save_data(self,data):
+        dictionary_vacancy = {}
+        with open('vacancy.json', 'w', encoding='utf-8') as file:
+            for element in self.list_vacancy:
+                body_vacancy = {'Название вакансии': element.name, 'Зарплата': element.salary,
+                                'Описание': element.responsibility, 'Ссылка': element.url_to_vacansy}
+                dictionary_vacancy[element.id] = body_vacancy
+            json.dump(dictionary_vacancy, file, ensure_ascii=False)

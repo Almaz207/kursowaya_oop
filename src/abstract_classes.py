@@ -4,9 +4,9 @@ from abc import ABC, abstractmethod
 class VacansyService(ABC):
     """Абстрактный класс для подключения к API сервиса с вакансиями"""
 
-    @abstractmethod
-    def __get_data(self, queri, salary, top):
-        pass
+    # @abstractmethod
+    # def __get_data(self, queri, salary, top):
+    #     pass
 
     @abstractmethod
     def convert_vacansy(self, queri, salary, top):

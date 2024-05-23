@@ -8,23 +8,24 @@ vacancy_list = []
 class Vacansy:
     """Класс конструктор вакансии. Атрибуты : ID, название вакансии, зарплата, описание и ссылка на саму ваакансию"""
 
-    def __init__(self, id, name, salary, responsibility, url_to_vacansy):
+    def __init__(self, id, name, salary_from, salary_to, responsibility, url_to_vacansy):
         self.id = id
         self.name = name
-        self.salary = salary
+        self.salary_from = salary_from
+        self.salary_to = salary_to
         self.responsibility = responsibility
         self.url_to_vacansy = url_to_vacansy
 
     def __str__(self):
         return f'''НАЗВАНИЕ: {self.name}
-ЗАРПЛАТА: {self.salary}
+ЗАРПЛАТА: {self.salary_from} - {self.salary_to}
 ТРЕБОВАНИЯ: {self.responsibility}
 ССЫЛКА: {self.url_to_vacansy}
 ID: {self.id}'''
 
     def __repr__(self):
         return f'''НАЗВАНИЕ: {self.name}
-ЗАРПЛАТА: {self.salary}
+ЗАРПЛАТА: {self.salary_from} - {self.salary_to}
 ТРЕБОВАНИЯ: {self.responsibility}
 ССЫЛКА: {self.url_to_vacansy}
 # ID: {self.id}\n'''
@@ -62,7 +63,8 @@ class HHIntegration(VacansyService):
         for item in data['items']:
             vacancy_list.append(Vacansy(id=item['id'],
                                         name=item['name'],
-                                        salary=item['salary']['from'],
+                                        salary_from=item['salary']['from'],
+                                        salary_to=item['salary']['to'],
                                         responsibility=item['snippet']['responsibility'],
                                         url_to_vacansy=item['alternate_url']))
 
@@ -70,30 +72,42 @@ class HHIntegration(VacansyService):
 class RewriterToFile(FailFiller):
     """Класс для обработки вакансии"""
 
-    def __init__(self, list_vacancy):
+    def __init__(self, list_vacancy, file_name):
         self.list_vacancy = list_vacancy
+        self.file_name = file_name
 
-    def filling_file(self):
+    # def add_vacansy(self, list_vacancy):
+    #     """Добавляет новую вакансию"""
+    #     try:
+    #         data = self.load_data()
+    #     except FileNotFoundError:
+    #         data = []
+    #     except json.decoder.JSONDecodeError:
+    #         data = []
+    #
+    #     data.append(list_vacancy)
+    #     self.save_data()
+
+    def filtr_vacancy(self):
+        self.list_vacancy.sort(key=lambda vacancy: vacancy.salary_from, revers=False)
+
+    def delet_data(self, number):
+        for vacancy in vacancy_list:
+            if vacancy.id == number:
+                vacancy_list.remove(vacancy)
+            return self.save_data()
+
+    def save_data(self):
         dictionary_vacancy = {}
-        with open('vacancy.json', 'w', encoding='utf-8') as file:
+        with open(self.file_name, 'w', encoding='utf-8') as file:
             for element in self.list_vacancy:
-                body_vacancy = {'Название вакансии': element.name, 'Зарплата': element.salary,
+                body_vacancy = {'Название вакансии': element.name, 'Зарплата от': element.salary_from,
+                                'Зарплата до': element.salary_to,
                                 'Описание': element.responsibility, 'Ссылка': element.url_to_vacansy}
                 dictionary_vacancy[element.id] = body_vacancy
             json.dump(dictionary_vacancy, file, ensure_ascii=False)
-        return dictionary_vacancy
+            return dictionary_vacancy
 
-    def edit_data(self):
-        pass
-
-    def delit_data(self):
-        pass
-
-    def _save_data(self,data):
-        dictionary_vacancy = {}
-        with open('vacancy.json', 'w', encoding='utf-8') as file:
-            for element in self.list_vacancy:
-                body_vacancy = {'Название вакансии': element.name, 'Зарплата': element.salary,
-                                'Описание': element.responsibility, 'Ссылка': element.url_to_vacansy}
-                dictionary_vacancy[element.id] = body_vacancy
-            json.dump(dictionary_vacancy, file, ensure_ascii=False)
+    def load_data(self):
+        with open(self.file_name, 'r', encoding='utf-8') as file:
+            return json.load(file)

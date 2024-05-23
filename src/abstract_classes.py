@@ -15,14 +15,14 @@ class VacansyService(ABC):
 
 class FailFiller(ABC):
 
+    # @abstractmethod
+    # def filling_file(self):
+    #     pass
+
     @abstractmethod
-    def filling_file(self):
+    def filtr_vacancy(self):
         pass
 
     @abstractmethod
-    def edit_data(self):
-        pass
-
-    @abstractmethod
-    def delit_data(self):
+    def delet_data(self, number):
         pass

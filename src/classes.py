@@ -1,5 +1,6 @@
 import requests
 import json
+import os
 from src.abstract_classes import VacansyService, FailFiller
 
 vacancy_list = []
@@ -74,19 +75,7 @@ class RewriterToFile(FailFiller):
 
     def __init__(self, list_vacancy, file_name):
         self.list_vacancy = list_vacancy
-        self.file_name = file_name
-
-    # def add_vacansy(self, list_vacancy):
-    #     """Добавляет новую вакансию"""
-    #     try:
-    #         data = self.load_data()
-    #     except FileNotFoundError:
-    #         data = []
-    #     except json.decoder.JSONDecodeError:
-    #         data = []
-    #
-    #     data.append(list_vacancy)
-    #     self.save_data()
+        self.__file_name = file_name
 
     def filtr_vacancy(self):
         self.list_vacancy.sort(key=lambda vacancy: vacancy.salary_from, revers=False)
@@ -99,7 +88,8 @@ class RewriterToFile(FailFiller):
 
     def save_data(self):
         dictionary_vacancy = {}
-        with open(self.file_name, 'w', encoding='utf-8') as file:
+        os.makedirs('data', exist_ok=True)
+        with open(self.__file_name, 'w', encoding='utf-8') as file:
             for element in self.list_vacancy:
                 body_vacancy = {'Название вакансии': element.name, 'Зарплата от': element.salary_from,
                                 'Зарплата до': element.salary_to,
@@ -109,5 +99,5 @@ class RewriterToFile(FailFiller):
             return dictionary_vacancy
 
     def load_data(self):
-        with open(self.file_name, 'r', encoding='utf-8') as file:
+        with open(self.__file_name, 'r', encoding='utf-8') as file:
             return json.load(file)

@@ -12,12 +12,49 @@ class Vacansy:
     def __init__(self, id, name, salary_from, salary_to, responsibility, url_to_vacansy):
         self.id = id
         self.name = name
-        self.salary_from = salary_from
-        self.salary_to = salary_to
+        self.salary_from = self._validate_salary(salary_from)
+        self.salary_to = self._validate_salary(salary_to)
         self.responsibility = responsibility
         self.url_to_vacansy = url_to_vacansy
 
+    @staticmethod
+    def _validate_salary(salary):
+        """Метод для валидации данных, если значение зарплаты указано(salary!=None), то возвращается указанное значение,
+         если зарплата не указана, то возвращается 0 """
+
+        return salary if salary != None else 0
+
+    def __eq__(self, other):
+        """Определяет наличие ключевых слов в описании вакансии"""
+
+        for key in other:
+            if key in self.responsibility:
+                return True
+        return False
+
+    def __lt__(self, other):
+        """Определяет, меньше ли минимальная зарплата текущей вакансии, чем у другой"""
+
+        self_salary_from = self.salary_from if type(self.salary_from) is int else 0
+        other_salary_from = other.salary_from if type(other.salary_from) is int else 0
+        return self_salary_from < other_salary_from
+
+    def __le__(self, other: str):
+        """Определяет, меньше или равна максимальная зарплата текущей вакансии, чем у другой"""
+
+        if self.salary_to is not int:
+            return True
+        return self.salary_to <= int(other)
+
+    def __ge__(self, other: str) -> bool:
+        """Определяет, больше или равна минимальная зарплата текущей вакансии, чем у другой"""
+
+        if self.salary_from is not int:
+            return True
+        return self.salary_from >= int(other)
+
     def __str__(self):
+
         return f'''НАЗВАНИЕ: {self.name}
 ЗАРПЛАТА: {self.salary_from} - {self.salary_to}
 ТРЕБОВАНИЯ: {self.responsibility}
@@ -25,6 +62,7 @@ class Vacansy:
 ID: {self.id}'''
 
     def __repr__(self):
+
         return f'''НАЗВАНИЕ: {self.name}
 ЗАРПЛАТА: {self.salary_from} - {self.salary_to}
 ТРЕБОВАНИЯ: {self.responsibility}
@@ -52,14 +90,11 @@ class HHIntegration(VacansyService):
 
         response = requests.get(url=self.__url, params=parametr)
         response.raise_for_status()
-        # if response.raise_for_status():
-        #     print('Внимание: у данного пользователя отсутствуют права администратора.')
         return response.json()
 
     def convert_vacansy(self, queri, salary, top):
         """Метод отсортировывает только необходимые данные: Название, Зарплату, Описание, Ссылкa на вакансию
         и добавляет экземпляр класса в список вакансий"""
-        # data = HHIntegration().__get_data(queri, salary, top)
         data = self.__get_data(queri, salary, top)
         for item in data['items']:
             vacancy_list.append(Vacansy(id=item['id'],
